@@ -1,12 +1,14 @@
-package com.ansh.snippets.activities
+package com.ansh.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import com.ansh.snippets.R
+import com.ansh.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
+
+    private val tag = MainActivity::class.java.simpleName
 
     private val labels = mutableListOf(
         "Camera"

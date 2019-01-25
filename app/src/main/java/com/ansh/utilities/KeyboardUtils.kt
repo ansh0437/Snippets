@@ -1,4 +1,4 @@
-package com.ansh.snippets.utilities
+package com.ansh.utilities
 
 import android.app.Activity
 import android.content.Context

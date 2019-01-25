@@ -1,0 +1,5 @@
+NOTES
+
+- File provider should not be places in library modules the should always be added in the parent manifest
+
+- While creating aar comment play services and fabric plugins in gradle

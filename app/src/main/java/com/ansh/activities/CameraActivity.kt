@@ -1,10 +1,12 @@
-package com.ansh.snippets.activities
+package com.ansh.activities
 
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import com.ansh.snippets.R
+import com.ansh.R
 
 class CameraActivity : BaseActivity() {
+
+    private val tag = CameraActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

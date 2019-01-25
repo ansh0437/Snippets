@@ -1,4 +1,4 @@
-package com.ansh.snippets.activities
+package com.ansh.activities
 
 import android.os.Bundle
 import android.os.PersistableBundle

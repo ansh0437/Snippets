@@ -1,10 +1,10 @@
-package com.ansh.snippets.views
+package com.ansh.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RadioButton
 
-class CustomRadioButton : RadioButton {
+class CoreRadioButton : RadioButton {
 
     constructor(context: Context) : super(context)
 

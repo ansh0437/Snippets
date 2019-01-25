@@ -1,10 +1,10 @@
-package com.ansh.snippets.utilities
+package com.ansh.utilities
 
 import android.app.Activity
 import android.app.ProgressDialog
 import android.os.Handler
-import com.ansh.snippets.R
-import com.ansh.snippets.SnippetsApp
+import com.ansh.R
+import com.ansh.CoreApp
 
 object ProgressDialogUtils {
 
@@ -17,7 +17,7 @@ object ProgressDialogUtils {
         if (!progressDialog!!.isShowing && !activity.isFinishing) {
             progressDialog = ProgressDialog.show(
                 activity,
-                SnippetsApp.appCtx.getString(R.string.app_name),
+                CoreApp.appCtx.getString(R.string.app_name),
                 msg,
                 true,
                 false

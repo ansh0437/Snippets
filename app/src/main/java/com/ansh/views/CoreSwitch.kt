@@ -1,10 +1,10 @@
-package com.ansh.snippets.views
+package com.ansh.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.Switch
 
-class CustomSwitch : Switch {
+class CoreSwitch : Switch {
 
     constructor(context: Context) : super(context)
 

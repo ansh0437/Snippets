@@ -1,4 +1,4 @@
-package com.ansh.snippets.helpers
+package com.ansh.helpers
 
 import android.app.Activity
 import android.content.Context

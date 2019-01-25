@@ -1,9 +1,9 @@
-package com.ansh.snippets.utilities
+package com.ansh.utilities
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.ansh.snippets.R
-import com.ansh.snippets.SnippetsApp
+import com.ansh.R
+import com.ansh.CoreApp
 
 class SharedPreferenceUtils private constructor() {
 
@@ -14,8 +14,8 @@ class SharedPreferenceUtils private constructor() {
     }
 
     private fun init() {
-        mSharedPreferences = SnippetsApp.appCtx.getSharedPreferences(
-            SnippetsApp.appCtx.getString(R.string.app_name), Context.MODE_PRIVATE
+        mSharedPreferences = CoreApp.appCtx.getSharedPreferences(
+            CoreApp.appCtx.getString(R.string.app_name), Context.MODE_PRIVATE
         )
     }
 
@@ -76,7 +76,7 @@ class SharedPreferenceUtils private constructor() {
 
         fun setStringPreference(key: String, value: String): Boolean {
             val preferences = preferenceInstance
-            if (preferences != null && StringUtils.isNotBlank(key)) {
+            if (preferences != null && key.isNotBlank()) {
                 val editor = preferences.edit()
                 editor.putString(key, value)
                 return editor.commit()
