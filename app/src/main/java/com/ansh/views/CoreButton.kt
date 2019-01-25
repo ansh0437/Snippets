@@ -39,32 +39,21 @@ class CoreButton : AppCompatButton {
         cornerRadius = arr.getInt(R.styleable.CoreButton_corner_radius, 0)
         strokeWidth = arr.getInt(R.styleable.CoreButton_stroke_width, 0)
         fillColor =
-            arr.getColor(R.styleable.CoreButton_fill_color, ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                arr.getColor(R.styleable.CoreButton_fill_color, ContextCompat.getColor(context, R.color.colorPrimaryDark))
         val strokeColor =
-            arr.getColor(
-                R.styleable.CoreButton_stroke_color,
-                ContextCompat.getColor(context, android.R.color.transparent)
-            )
+                arr.getColor(
+                        R.styleable.CoreButton_stroke_color,
+                        ContextCompat.getColor(context, android.R.color.transparent)
+                )
 
-        if (btnStyle == 1)
+        if (btnStyle == 1) {
             background = getDrawable(fillColor, strokeColor)
-        else {
-            val textColor = arr.getColor(
-                R.styleable.CoreButton_text_color,
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
-            val selectorTextColor = arr.getColor(
-                R.styleable.CoreButton_selector_text_color,
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
-            val selectorFillColor = arr.getColor(
-                R.styleable.CoreButton_selector_fill_color,
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
-            val selectorStrokeColor = arr.getColor(
-                R.styleable.CoreButton_selector_stroke_color,
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
+        } else {
+            val defaultColor = ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            val textColor = arr.getColor(R.styleable.CoreButton_text_color, defaultColor)
+            val selectorTextColor = arr.getColor(R.styleable.CoreButton_selector_text_color, defaultColor)
+            val selectorFillColor = arr.getColor(R.styleable.CoreButton_selector_fill_color, defaultColor)
+            val selectorStrokeColor = arr.getColor(R.styleable.CoreButton_selector_stroke_color, defaultColor)
             textSelectorBG(textColor, selectorTextColor)
             selectorBG(fillColor, strokeColor, selectorFillColor, selectorStrokeColor)
         }
