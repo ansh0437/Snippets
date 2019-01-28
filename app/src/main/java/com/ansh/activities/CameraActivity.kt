@@ -15,8 +15,8 @@ class CameraActivity : BaseActivity() {
 
     fun selectPhoto() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Select Photo")
-        builder.setItems(mutableListOf("Camera", "Gallery", "Cancel").toTypedArray()) { d, i ->
+        builder.setTitle(getString(R.string.select_photo))
+        builder.setItems(resources.getStringArray(R.array.image_selector_options)) { d, i ->
             when (i) {
                 0 -> capturePhoto()
                 1 -> galleryPhoto()
