@@ -25,7 +25,12 @@ class PermissionHelper {
     private var showRational: Boolean = false
 
     //=========Constructors - START=========
-    constructor(activity: Activity, fragment: Fragment, permissions: Array<String>, requestCode: Int) {
+    constructor(
+        activity: Activity,
+        fragment: Fragment,
+        permissions: Array<String>,
+        requestCode: Int
+    ) {
         this.activity = activity
         this.fragment = fragment
         this.permissions = permissions
@@ -56,14 +61,22 @@ class PermissionHelper {
     }
 
     //=========Constructors- END=========
+
     fun request(permissionCallback: PermissionCallback?) {
         this.mPermissionCallback = permissionCallback
         if (!hasPermission()) {
             showRational = shouldShowRational(permissions!!)
             if (activity != null)
-                ActivityCompat.requestPermissions(activity!!, filterNotGrantedPermission(permissions!!), REQUEST_CODE)
+                ActivityCompat.requestPermissions(
+                    activity!!,
+                    filterNotGrantedPermission(permissions!!),
+                    REQUEST_CODE
+                )
             else
-                fragment!!.requestPermissions(filterNotGrantedPermission(permissions!!), REQUEST_CODE)
+                fragment!!.requestPermissions(
+                    filterNotGrantedPermission(permissions!!),
+                    REQUEST_CODE
+                )
         } else {
             Log.i(TAG, "PERMISSION: Permission Granted")
             mPermissionCallback?.onPermissionGranted()
@@ -90,19 +103,21 @@ class PermissionHelper {
         this.deniedCallback = callback;
     }
 
-    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
 
         if (requestCode == REQUEST_CODE) {
             var denied = false
-            var i = 0
             val grantedPermissions = ArrayList<String>()
-            for (grantResult in grantResults) {
+            for ((i, grantResult) in grantResults.withIndex()) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
                     denied = true
                 } else {
                     grantedPermissions.add(permissions[i])
                 }
-                i++
             }
 
             if (denied) {
@@ -160,7 +175,11 @@ class PermissionHelper {
     private fun filterNotGrantedPermission(permissions: Array<String>): Array<String> {
         val notGrantedPermission = ArrayList<String>()
         for (permission in permissions) {
-            if (ContextCompat.checkSelfPermission(getContext()!!, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    getContext()!!,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 notGrantedPermission.add(permission)
             }
         }
@@ -175,7 +194,11 @@ class PermissionHelper {
      */
     fun hasPermission(): Boolean {
         for (permission in permissions!!) {
-            if (ContextCompat.checkSelfPermission(getContext()!!, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    getContext()!!,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 return false
             }
         }
@@ -190,7 +213,11 @@ class PermissionHelper {
      */
     fun checkSelfPermission(permissions: Array<String>?): Boolean {
         for (permission in permissions!!) {
-            if (ContextCompat.checkSelfPermission(getContext()!!, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    getContext()!!,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 return false
             }
         }
@@ -228,7 +255,8 @@ class PermissionHelper {
         try {
             val context = if (activity != null) activity else fragment!!.activity
             val info =
-                context?.getPackageManager()?.getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS)
+                context?.getPackageManager()
+                    ?.getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS)
             if (info?.requestedPermissions != null) {
                 for (p in info?.requestedPermissions) {
                     if (p == permission) {
