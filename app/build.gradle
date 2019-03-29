@@ -6,6 +6,11 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.ansh0437'
+version = '1.0.0'
+
 android {
     compileSdkVersion 28
     defaultConfig {
