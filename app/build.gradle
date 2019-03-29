@@ -1,20 +1,15 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
-//apply plugin: 'io.fabric'
+apply plugin: 'io.fabric'
 
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'com.github.dcendents.android-maven'
-
-group = 'com.github.ansh0437'
-version = '1.0.0'
-
 android {
     compileSdkVersion 28
     defaultConfig {
-//        applicationId "com.ansh"
+        applicationId "com.ansh"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -50,4 +45,4 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 }
 
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
