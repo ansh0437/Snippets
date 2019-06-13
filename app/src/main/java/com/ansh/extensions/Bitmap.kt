@@ -4,10 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import java.io.ByteArrayOutputStream
 
-private const val tag = "BitmapExtension"
-
 val Bitmap.bytes
-    get() = {
+    get() = run {
         val baos = ByteArrayOutputStream()
         this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         baos.toByteArray()

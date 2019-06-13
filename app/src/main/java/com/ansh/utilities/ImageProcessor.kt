@@ -40,8 +40,7 @@ object ImageProcessor {
     @Throws(IOException::class)
     private fun rotateImageIfRequired(bitmap: Bitmap, filePath: String): Bitmap {
         val ei = ExifInterface(filePath)
-        val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-        return when (orientation) {
+        return when (ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
             ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90)
             ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180)
             ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270)

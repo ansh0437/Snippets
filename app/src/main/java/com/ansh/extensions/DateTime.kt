@@ -1,39 +1,15 @@
 package com.ansh.extensions
 
-import java.text.DateFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
+import com.ansh.utilities.DateUtil
 
-private const val tag = "DateTimeExtension"
+fun String.toLocalDate(format: String = DateUtil.DATE_FORMAT) =
+    DateUtil.convertUTCToLocal(this, format)
 
-val String.toLocalDate
-    get() = {
-        val df = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        df.timeZone = TimeZone.getTimeZone("UTC")
-        val date = df.parse(this)
-        df.timeZone = TimeZone.getDefault()
-        df.format(date)
-    }
+fun String.toLocalDateTime(format: String = DateUtil.DATE_TIME_FORMAT) =
+    DateUtil.convertLocalToUTC(this, format)
 
-val String.toLocalDateTime
-    get() = {
-        val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        df.timeZone = TimeZone.getTimeZone("UTC")
-        val date = df.parse(this)
-        df.timeZone = TimeZone.getDefault()
-        df.format(date)
-    }
+fun String.toFormattedDate(inFormat: String, outFormat: String) =
+    DateUtil.convertDateFormat(this, inFormat, outFormat)
 
-fun String.toFormattedDate(inFormat: String, outFormat: String): String {
-    var dateFormat: DateFormat = SimpleDateFormat(inFormat, Locale.getDefault())
-    val date: Date
-    try {
-        date = dateFormat.parse(this)
-    } catch (e: ParseException) {
-        e.logError(tag, "toFormattedDate: ")
-        return this
-    }
-    dateFormat = SimpleDateFormat(outFormat, Locale.getDefault())
-    return dateFormat.format(date)
-}
+fun String.toMillis(format: String = DateUtil.DATE_TIME_FORMAT) =
+    DateUtil.convertToMillis(this, format)

@@ -1,7 +1,7 @@
 package com.ansh.extensions
 
-import android.databinding.BindingAdapter
-import com.ansh.views.CoreButton
+import androidx.databinding.BindingAdapter
+import com.ansh.view.custom.CoreButton
 
 @BindingAdapter("fill_color")
 fun btnFillColor(view: CoreButton, color: Int) {

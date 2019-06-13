@@ -8,7 +8,7 @@ import java.util.*
 private const val tag = "LocationExtension"
 
 val Location.getFormattedAddress
-    get() = {
+    get() = run {
         try {
             val geo = Geocoder(CoreApp.appCtx, Locale.getDefault())
             val addressList = geo.getFromLocation(latitude, longitude, 1)

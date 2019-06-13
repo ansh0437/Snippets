@@ -1,0 +1,97 @@
+package com.ansh.data
+
+import android.content.Context
+import android.content.SharedPreferences
+import com.ansh.CoreApp
+import com.ansh.R
+import com.ansh.extensions.resToStr
+
+object SharedPref {
+
+    private var mSharedPreferences: SharedPreferences =
+        CoreApp.appCtx.getSharedPreferences(
+            R.string.preference_name.resToStr,
+            Context.MODE_PRIVATE
+        )
+
+    fun save(key: String, value: Any) {
+        mSharedPreferences.edit().let {
+            when (value) {
+                is String -> it.putString(key, value)
+                is Int -> it.putInt(key, value)
+                is Boolean -> it.putBoolean(key, value)
+                is Float -> it.putFloat(key, value)
+                is Long -> it.putLong(key, value)
+            }
+            it.apply()
+        }
+    }
+
+    fun get(key: String, defValue: Any): Any {
+        return when (defValue::class) {
+            String::class -> mSharedPreferences.getString(key, defValue as String)
+            Int::class -> mSharedPreferences.getInt(key, defValue as Int)
+            Float::class -> mSharedPreferences.getFloat(key, defValue as Float)
+            Long::class -> mSharedPreferences.getLong(key, defValue as Long)
+            Boolean::class -> mSharedPreferences.getBoolean(key, defValue as Boolean)
+            else -> ""
+        }
+    }
+
+    fun setValue(key: String, value: Any) {
+        mSharedPreferences.edit().let {
+            when (value) {
+                is String -> it.putString(key, value)
+                is Int -> it.putInt(key, value)
+                is Boolean -> it.putBoolean(key, value)
+                is Float -> it.putFloat(key, value)
+                is Long -> it.putLong(key, value)
+            }
+            it.apply()
+        }
+    }
+
+    fun getString(key: String): String {
+        return mSharedPreferences.getString(key, "") ?: ""
+    }
+
+    fun getString(key: String, defaultValue: String): String {
+        return mSharedPreferences.getString(key, defaultValue) ?: defaultValue
+    }
+
+    fun getInt(key: String): Int {
+        return mSharedPreferences.getInt(key, 0)
+    }
+
+    fun getInt(key: String, defaultValue: Int): Int {
+        return mSharedPreferences.getInt(key, defaultValue)
+    }
+
+    fun getFloat(key: String): Float {
+        return mSharedPreferences.getFloat(key, 0F)
+    }
+
+    fun getFloat(key: String, defaultValue: Float): Float {
+        return mSharedPreferences.getFloat(key, defaultValue)
+    }
+
+    fun getLong(key: String): Long {
+        return mSharedPreferences.getLong(key, 0L)
+    }
+
+    fun getLong(key: String, defaultValue: Long): Long {
+        return mSharedPreferences.getLong(key, defaultValue)
+    }
+
+    fun getBoolean(key: String): Boolean {
+        return mSharedPreferences.getBoolean(key, false)
+    }
+
+    fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return mSharedPreferences.getBoolean(key, defaultValue)
+    }
+
+    fun clear() {
+        mSharedPreferences.edit().clear().apply()
+    }
+}

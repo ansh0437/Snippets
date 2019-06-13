@@ -2,8 +2,6 @@ package com.ansh.extensions
 
 import android.util.Patterns
 
-private const val tag = "PatternsExtension"
-
 val String.isValidNumber: Boolean
     get() = Patterns.PHONE.matcher(this).matches()
 
