@@ -1,5 +1,6 @@
 package com.ansh.api
 
+import com.ansh.CoreApp
 import com.ansh.R
 import com.ansh.extensions.resToStr
 import com.ansh.interfaces.ApiResponse
@@ -36,7 +37,7 @@ object ApiClient {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(CoreApp.baseURL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

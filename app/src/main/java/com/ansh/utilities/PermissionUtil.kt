@@ -11,7 +11,7 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ansh.R
-import com.ansh.constants.AppConstant
+import com.ansh.constants.REQUEST_CODE_SETTINGS
 import com.ansh.enums.PermissionEnum
 import com.ansh.extensions.resToStr
 import com.ansh.interfaces.DialogListener
@@ -136,7 +136,7 @@ class PermissionUtil(
                 override fun onPositive(dialogInterface: DialogInterface) {
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     intent.data = Uri.parse("package:" + mActivity.packageName)
-                    mActivity.startActivityForResult(intent, AppConstant.REQUEST_CODE_SETTINGS)
+                    mActivity.startActivityForResult(intent, REQUEST_CODE_SETTINGS)
                     dialogInterface.dismiss()
                 }
 

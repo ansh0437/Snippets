@@ -3,16 +3,11 @@ package com.ansh.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.ansh.CoreApp
-import com.ansh.R
-import com.ansh.extensions.resToStr
 
 object SharedPref {
 
     private var mSharedPreferences: SharedPreferences =
-        CoreApp.appCtx.getSharedPreferences(
-            R.string.preference_name.resToStr,
-            Context.MODE_PRIVATE
-        )
+        CoreApp.appCtx.getSharedPreferences(CoreApp.preferenceName, Context.MODE_PRIVATE)
 
     fun save(key: String, value: Any) {
         mSharedPreferences.edit().let {

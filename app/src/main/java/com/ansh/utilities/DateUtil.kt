@@ -9,7 +9,7 @@ import java.util.*
 
 object DateUtil {
 
-    val tag: String = DateUtil::class.java.simpleName
+    private val tag: String = DateUtil::class.java.simpleName
 
     const val UTC = "UTC"
     const val DATE_FORMAT = "yyyy-MM-dd"
@@ -52,6 +52,7 @@ object DateUtil {
             outputFormat.timeZone = localTimezone
             outputFormat.format(utcDate)
         } catch (e: Exception) {
+            e.logError(tag, "convertUTCToLocal: ")
             utcDateString
         }
     }
@@ -65,6 +66,7 @@ object DateUtil {
             outputFormat.timeZone = utcTimezone
             outputFormat.format(localDate)
         } catch (e: Exception) {
+            e.logError(tag, "convertLocalToUTC: ")
             localDateString
         }
     }
