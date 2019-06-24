@@ -42,7 +42,7 @@ object DialogUtil {
         activity: Activity,
         title: String,
         list: List<Any>,
-        dataCallback: OnDataCallback
+        dataCallback: (data: Any) -> Unit
     ) {
         val view = View.inflate(activity, R.layout.layout_list_dialog, null)
 
@@ -64,7 +64,7 @@ object DialogUtil {
         rv.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
         rv.adapter = DialogListAdapter(list, OnDataCallback { obj ->
-            dataCallback.onData(obj)
+            dataCallback.invoke(obj)
             alertDialog.dismiss()
         })
 
