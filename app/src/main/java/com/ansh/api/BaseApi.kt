@@ -1,11 +1,10 @@
-package com.ansh.data.repository
+package com.ansh.api
 
-import com.ansh.api.ApiClient
 import com.ansh.api.impl.ApiInterface
 import com.ansh.interfaces.ApiResponse
 import com.google.gson.JsonObject
 
-open class BaseRepo {
+open class BaseApi {
 
     fun get(url: String, apiResponse: ApiResponse?) {
         val apiInterface = ApiClient.create(ApiInterface::class.java)
