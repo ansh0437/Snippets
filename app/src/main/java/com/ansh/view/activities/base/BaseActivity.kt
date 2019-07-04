@@ -16,4 +16,15 @@ open class BaseActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    fun enableWindowTouch() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    fun disableWindowTouch() {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
 }
