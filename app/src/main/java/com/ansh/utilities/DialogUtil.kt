@@ -1,6 +1,7 @@
 package com.ansh.utilities
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -15,6 +16,27 @@ import com.ansh.interfaces.OnDataCallback
 import com.ansh.view.adapters.DialogListAdapter
 
 object DialogUtil {
+
+    fun alert(
+        activity: Activity,
+        message: String
+    ) {
+        showDialog(
+            activity,
+            R.string.alert.resToStr,
+            message,
+            R.string.ok.resToStr,
+            R.string.cancel.resToStr,
+            object : DialogListener {
+                override fun onPositive(dialogInterface: DialogInterface) {
+                    dialogInterface.dismiss()
+                }
+
+                override fun onNegative(dialogInterface: DialogInterface) {
+                    dialogInterface.dismiss()
+                }
+            })
+    }
 
     fun alert(
         activity: Activity,
