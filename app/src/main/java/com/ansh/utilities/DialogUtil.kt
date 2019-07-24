@@ -79,12 +79,31 @@ object DialogUtil {
         negativeLabel: String,
         dialogListener: DialogListener
     ) {
+        val view = View.inflate(activity, R.layout.layout_alert_dialog, null)
+
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle(title)
         builder.setCancelable(false)
-        builder.setMessage(message)
-        builder.setPositiveButton(positiveLabel) { di, _ -> dialogListener.onPositive(di) }
-        builder.setNegativeButton(negativeLabel) { di, _ -> dialogListener.onNegative(di) }
-        builder.show()
+        val alertDialog = builder.create()
+
+        alertDialog.setView(view)
+
+        view.findViewById<TextView>(R.id.tvTitle).text = title
+        view.findViewById<TextView>(R.id.tvMsg).text = message
+        view.findViewById<TextView>(R.id.tvRight).text = positiveLabel
+        view.findViewById<TextView>(R.id.tvLeft).text = negativeLabel
+
+        view.findViewById<ImageButton>(R.id.ibClose).setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        view.findViewById<TextView>(R.id.tvLeft).setOnClickListener {
+            dialogListener.onNegative(alertDialog)
+        }
+
+        view.findViewById<TextView>(R.id.tvRight).setOnClickListener {
+            dialogListener.onPositive(alertDialog)
+        }
+
+        alertDialog.show()
     }
 }
