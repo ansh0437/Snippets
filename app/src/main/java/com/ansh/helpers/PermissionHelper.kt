@@ -1,7 +1,6 @@
 package com.ansh.helpers
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -14,8 +13,9 @@ import com.ansh.R
 import com.ansh.constants.REQUEST_CODE_SETTINGS
 import com.ansh.enums.PermissionEnum
 import com.ansh.extensions.resToStr
-import com.ansh.interfaces.DialogListener
+import com.ansh.interfaces.NegativeListener
 import com.ansh.interfaces.PermissionCallback
+import com.ansh.interfaces.PositiveListener
 import com.ansh.utilities.DialogUtil
 import java.util.*
 
@@ -134,24 +134,21 @@ class PermissionHelper private constructor(private val builder: Builder) {
                         mDialogMessage,
                         R.string.ok.resToStr,
                         R.string.cancel.resToStr,
-                        object : DialogListener {
-                            override fun onPositive(dialogInterface: DialogInterface) {
-                                processPermission(
-                                    mPermissionList,
-                                    mDialogMessage,
-                                    this@PermissionHelper.iRequestCode
-                                )
-                                dialogInterface.dismiss()
-                            }
-
-                            override fun onNegative(dialogInterface: DialogInterface) {
-                                builder.mPermissionCallback.onPermissionResult(
-                                    this@PermissionHelper.iRequestCode,
-                                    if (mPermissionList.size == pendingPermissions.size) PermissionEnum.DENIED
-                                    else PermissionEnum.PARTIALLY_GRANTED
-                                )
-                                dialogInterface.dismiss()
-                            }
+                        PositiveListener {
+                            processPermission(
+                                mPermissionList,
+                                mDialogMessage,
+                                this@PermissionHelper.iRequestCode
+                            )
+                            it.dismiss()
+                        },
+                        NegativeListener {
+                            builder.mPermissionCallback.onPermissionResult(
+                                this@PermissionHelper.iRequestCode,
+                                if (mPermissionList.size == pendingPermissions.size) PermissionEnum.DENIED
+                                else PermissionEnum.PARTIALLY_GRANTED
+                            )
+                            it.dismiss()
                         }
                     )
                 } else {
@@ -171,21 +168,18 @@ class PermissionHelper private constructor(private val builder: Builder) {
             R.string.need_permission_manual.resToStr,
             R.string.ok.resToStr,
             R.string.cancel.resToStr,
-            object : DialogListener {
-                override fun onPositive(dialogInterface: DialogInterface) {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    intent.data = Uri.parse("package:" + builder.mActivity.packageName)
-                    builder.mActivity.startActivityForResult(intent, REQUEST_CODE_SETTINGS)
-                    dialogInterface.dismiss()
-                }
-
-                override fun onNegative(dialogInterface: DialogInterface) {
-                    builder.mPermissionCallback.onPermissionResult(
-                        iRequestCode,
-                        PermissionEnum.NEVER_ASK_AGAIN
-                    )
-                    dialogInterface.dismiss()
-                }
+            PositiveListener {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.parse("package:" + builder.mActivity.packageName)
+                builder.mActivity.startActivityForResult(intent, REQUEST_CODE_SETTINGS)
+                it.dismiss()
+            },
+            NegativeListener {
+                builder.mPermissionCallback.onPermissionResult(
+                    iRequestCode,
+                    PermissionEnum.NEVER_ASK_AGAIN
+                )
+                it.dismiss()
             }
         )
     }

@@ -1,7 +1,6 @@
 package com.ansh.utilities
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -11,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ansh.R
 import com.ansh.extensions.resToStr
-import com.ansh.interfaces.DialogListener
+import com.ansh.interfaces.NegativeListener
 import com.ansh.interfaces.OnDataCallback
+import com.ansh.interfaces.PositiveListener
 import com.ansh.view.adapters.DialogListAdapter
 
 object DialogUtil {
@@ -26,16 +26,8 @@ object DialogUtil {
             R.string.alert.resToStr,
             message,
             R.string.ok.resToStr,
-            R.string.cancel.resToStr,
-            object : DialogListener {
-                override fun onPositive(dialogInterface: DialogInterface) {
-                    dialogInterface.dismiss()
-                }
-
-                override fun onNegative(dialogInterface: DialogInterface) {
-                    dialogInterface.dismiss()
-                }
-            })
+            R.string.cancel.resToStr
+        )
     }
 
     fun alert(
@@ -44,19 +36,35 @@ object DialogUtil {
         message: String,
         positiveLabel: String,
         negativeLabel: String,
-        dialogListener: DialogListener
+        positiveListener: PositiveListener? = null,
+        negativeListener: NegativeListener? = null
     ) {
-        showDialog(activity, title, message, positiveLabel, negativeLabel, dialogListener)
+        showDialog(
+            activity,
+            title,
+            message,
+            positiveLabel,
+            negativeLabel,
+            positiveListener,
+            negativeListener
+        )
     }
 
-    fun alert(activity: Activity, title: String, message: String, dialogListener: DialogListener) {
+    fun alert(
+        activity: Activity,
+        title: String,
+        message: String,
+        positiveListener: PositiveListener? = null,
+        negativeListener: NegativeListener? = null
+    ) {
         showDialog(
             activity,
             title,
             message,
             R.string.ok.resToStr,
             R.string.cancel.resToStr,
-            dialogListener
+            positiveListener,
+            negativeListener
         )
     }
 
@@ -99,7 +107,8 @@ object DialogUtil {
         message: String,
         positiveLabel: String,
         negativeLabel: String,
-        dialogListener: DialogListener
+        positiveListener: PositiveListener? = null,
+        negativeListener: NegativeListener? = null
     ) {
         val view = View.inflate(activity, R.layout.layout_alert_dialog, null)
 
@@ -119,11 +128,13 @@ object DialogUtil {
         }
 
         view.findViewById<TextView>(R.id.tvLeft).setOnClickListener {
-            dialogListener.onNegative(alertDialog)
+            if (negativeListener == null) alertDialog.dismiss()
+            else negativeListener.onClick(alertDialog)
         }
 
         view.findViewById<TextView>(R.id.tvRight).setOnClickListener {
-            dialogListener.onPositive(alertDialog)
+            if (positiveListener == null) alertDialog.dismiss()
+            else positiveListener.onClick(alertDialog)
         }
 
         alertDialog.show()
