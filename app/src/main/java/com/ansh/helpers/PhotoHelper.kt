@@ -1,28 +1,30 @@
-package com.ansh.utilities
+package com.ansh.helpers
 
 import android.graphics.*
-import android.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 import com.ansh.CoreApp
-import com.ansh.extensions.createIfNotExists
-import com.ansh.extensions.getTempPath
-import com.ansh.extensions.logError
-import com.ansh.extensions.saveBytes
+import com.ansh.extensions.*
 import java.io.File
 import java.io.IOException
 import kotlin.math.roundToInt
 
-object ImageProcessor {
+object PhotoHelper {
 
-    private val tag = ImageProcessor::class.java.simpleName
+    private val tag = PhotoHelper::class.java.simpleName
 
     const val TEMP_IMAGE_FILE_NAME = "tempImage.jpg"
     const val ROTATION_TEMP_FILE_NAME = "rotatedTemp.jpg"
     const val COMPRESSED_TEMP_FILE_NAME = "compressedTemp.jpg"
 
-    var mainDir = File(CoreApp.appCtx.filesDir, "images")
+    var mainDir = File(CoreApp.appCtx.filesDir, "photoHelper")
 
     init {
         mainDir.createIfNotExists()
+    }
+
+    fun saveBitmap(dir: File, fileName: String, bitmap: Bitmap) {
+        val file = File(dir, fileName)
+        file.saveBytes(bitmap.bytes)
     }
 
     fun rotateImageIfRequired(fileBytes: ByteArray): Bitmap {
@@ -40,10 +42,22 @@ object ImageProcessor {
     @Throws(IOException::class)
     private fun rotateImageIfRequired(bitmap: Bitmap, filePath: String): Bitmap {
         val ei = ExifInterface(filePath)
-        return when (ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90)
-            ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180)
-            ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270)
+        return when (ei.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        )) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(
+                bitmap,
+                90
+            )
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(
+                bitmap,
+                180
+            )
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(
+                bitmap,
+                270
+            )
             else -> bitmap
         }
     }
@@ -91,7 +105,11 @@ object ImageProcessor {
                     }
                 }
             }
-            options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight)
+            options.inSampleSize = calculateInSampleSize(
+                options,
+                actualWidth,
+                actualHeight
+            )
             options.inJustDecodeBounds = false
             options.inDither = false
             options.inPurgeable = true
@@ -110,7 +128,12 @@ object ImageProcessor {
 
             val canvas = Canvas(scaledBitmap!!)
             canvas.matrix = scaleMatrix
-            canvas.drawBitmap(bmp, middleX - bmp.width / 2, middleY - bmp.height / 2, Paint(Paint.FILTER_BITMAP_FLAG))
+            canvas.drawBitmap(
+                bmp,
+                middleX - bmp.width / 2,
+                middleY - bmp.height / 2,
+                Paint(Paint.FILTER_BITMAP_FLAG)
+            )
 
             val exif = ExifInterface(filePath)
 
@@ -123,14 +146,26 @@ object ImageProcessor {
             }
             orientation.toString().logError(tag)
             scaledBitmap =
-                    Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.width, scaledBitmap.height, matrix, true)
+                Bitmap.createBitmap(
+                    scaledBitmap,
+                    0,
+                    0,
+                    scaledBitmap.width,
+                    scaledBitmap.height,
+                    matrix,
+                    true
+                )
         } catch (e: Exception) {
             e.logError(tag, "compressImage: ")
         }
         return scaledBitmap
     }
 
-    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    private fun calculateInSampleSize(
+        options: BitmapFactory.Options,
+        reqWidth: Int,
+        reqHeight: Int
+    ): Int {
         val height = options.outHeight
         val width = options.outWidth
         var inSampleSize = 1
