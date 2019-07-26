@@ -2,6 +2,7 @@ package com.ansh.utilities
 
 import android.app.Activity
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ansh.R
 import com.ansh.extensions.resToStr
+import com.ansh.extensions.toast
 import com.ansh.interfaces.NegativeListener
 import com.ansh.interfaces.OnDataCallback
 import com.ansh.interfaces.PositiveListener
@@ -101,6 +103,52 @@ object DialogUtil {
         alertDialog.show()
     }
 
+    fun inputDialog(
+        activity: Activity,
+        title: String,
+        positiveLabel: String,
+        negativeLabel: String,
+        emptyErrorMessage: String = "Input field empty",
+        negativeListener: NegativeListener? = null,
+        inputCallback: (data: String) -> Unit
+    ) {
+        val view = View.inflate(activity, R.layout.layout_input_dialog, null)
+
+        val builder = AlertDialog.Builder(activity)
+        builder.setCancelable(false)
+        val alertDialog = builder.create()
+
+        alertDialog.setView(view)
+
+        val inputET = view.findViewById<EditText>(R.id.etInput)
+
+        view.findViewById<TextView>(R.id.tvTitle).text = title
+        view.findViewById<TextView>(R.id.tvRight).text = positiveLabel
+        view.findViewById<TextView>(R.id.tvLeft).text = negativeLabel
+
+        view.findViewById<ImageButton>(R.id.ibClose).setOnClickListener {
+            if (negativeListener == null) alertDialog.dismiss()
+            else negativeListener.onClick(alertDialog)
+        }
+
+        view.findViewById<TextView>(R.id.tvLeft).setOnClickListener {
+            if (negativeListener == null) alertDialog.dismiss()
+            else negativeListener.onClick(alertDialog)
+        }
+
+        view.findViewById<TextView>(R.id.tvRight).setOnClickListener {
+            val input = inputET.text.toString().trim()
+            if (input.isEmpty()) {
+                emptyErrorMessage.toast()
+            } else {
+                inputCallback.invoke(input)
+                alertDialog.dismiss()
+            }
+        }
+
+        alertDialog.show()
+    }
+
     private fun showDialog(
         activity: Activity,
         title: String,
@@ -123,9 +171,7 @@ object DialogUtil {
         view.findViewById<TextView>(R.id.tvRight).text = positiveLabel
         view.findViewById<TextView>(R.id.tvLeft).text = negativeLabel
 
-        view.findViewById<ImageButton>(R.id.ibClose).setOnClickListener {
-            alertDialog.dismiss()
-        }
+        view.findViewById<ImageButton>(R.id.ibClose).setOnClickListener { alertDialog.dismiss() }
 
         view.findViewById<TextView>(R.id.tvLeft).setOnClickListener {
             if (negativeListener == null) alertDialog.dismiss()

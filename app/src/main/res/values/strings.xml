@@ -23,5 +23,6 @@
     <string name="need_permission_camera">Camera permission needed to authenticate user.</string>
     <string name="need_permission_storage">Storage permission needed to update app.</string>
     <string name="need_permission_manual">Give permission manually from settings.</string>
+    <string name="type_here">Type here…</string>
 
 </resources>
