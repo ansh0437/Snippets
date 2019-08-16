@@ -12,8 +12,7 @@ import com.ansh.interfaces.OnListItemClick
 class DialogListAdapter(
     private val mList: List<Any>,
     private val onItemClick: OnDataCallback? = null
-) :
-    RecyclerView.Adapter<DialogListAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<DialogListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
