@@ -22,7 +22,7 @@ interface ApiInterface {
     @POST("{url}")
     fun postApi(
         @Path("url") url: String,
-        @PartMap bodyMap: Map<String, @JvmSuppressWildcards RequestBody>
+        @PartMap bodyMap: HashMap<String, RequestBody>
     ): Call<JsonObject>
 
     @Multipart
@@ -30,7 +30,7 @@ interface ApiInterface {
     fun multipartApi(
         @Path("url") url: String,
         @Part files: List<MultipartBody.Part>,
-        @PartMap bodyMap: Map<String, @JvmSuppressWildcards RequestBody>
+        @PartMap bodyMap: HashMap<String, RequestBody>
     ): Call<JsonObject>
 
 }

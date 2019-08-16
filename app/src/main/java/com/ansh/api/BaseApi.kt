@@ -23,7 +23,7 @@ open class BaseApi {
     fun multipart(
         url: String,
         files: List<MultipartBody.Part>,
-        bodyMap: Map<String, RequestBody>,
+        bodyMap: HashMap<String, RequestBody>,
         apiResponse: ApiResponse?
     ) {
         val apiInterface = ApiClient.create(ApiInterface::class.java)
