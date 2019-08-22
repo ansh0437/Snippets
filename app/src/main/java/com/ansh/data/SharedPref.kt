@@ -22,14 +22,14 @@ object SharedPref {
         }
     }
 
-    fun get(key: String, defValue: Any): Any {
-        return when (defValue::class) {
-            String::class -> mSharedPreferences.getString(key, defValue as String)
-            Int::class -> mSharedPreferences.getInt(key, defValue as Int)
-            Float::class -> mSharedPreferences.getFloat(key, defValue as Float)
-            Long::class -> mSharedPreferences.getLong(key, defValue as Long)
-            Boolean::class -> mSharedPreferences.getBoolean(key, defValue as Boolean)
-            else -> ""
+    fun get(key: String, defValue: Any): Any? {
+        return when (defValue) {
+            is String -> mSharedPreferences.getString(key, defValue)
+            is Int -> mSharedPreferences.getInt(key, defValue)
+            is Float -> mSharedPreferences.getFloat(key, defValue)
+            is Long -> mSharedPreferences.getLong(key, defValue)
+            is Boolean -> mSharedPreferences.getBoolean(key, defValue)
+            else -> null
         }
     }
 

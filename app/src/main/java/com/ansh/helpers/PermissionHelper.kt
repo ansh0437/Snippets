@@ -56,10 +56,10 @@ class PermissionHelper private constructor(private val builder: Builder) {
         this.iRequestCode = requestCode
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkAndRequestPermissions(permissions, requestCode)) {
-                builder.mPermissionCallback.onPermissionResult(requestCode, PermissionEnum.GRANTED)
+                builder.mPermissionCallback.onPermissionResult(requestCode, PermissionEnum.Granted)
             }
         } else {
-            builder.mPermissionCallback.onPermissionResult(requestCode, PermissionEnum.GRANTED)
+            builder.mPermissionCallback.onPermissionResult(requestCode, PermissionEnum.Granted)
         }
     }
 
@@ -145,8 +145,8 @@ class PermissionHelper private constructor(private val builder: Builder) {
                         NegativeListener {
                             builder.mPermissionCallback.onPermissionResult(
                                 this@PermissionHelper.iRequestCode,
-                                if (mPermissionList.size == pendingPermissions.size) PermissionEnum.DENIED
-                                else PermissionEnum.PARTIALLY_GRANTED
+                                if (mPermissionList.size == pendingPermissions.size) PermissionEnum.Denied
+                                else PermissionEnum.PartiallyGranted
                             )
                             it.dismiss()
                         }
@@ -154,7 +154,7 @@ class PermissionHelper private constructor(private val builder: Builder) {
                 } else {
                     builder.mPermissionCallback.onPermissionResult(
                         this.iRequestCode,
-                        PermissionEnum.GRANTED
+                        PermissionEnum.Granted
                     )
                 }
             }
@@ -177,7 +177,7 @@ class PermissionHelper private constructor(private val builder: Builder) {
             NegativeListener {
                 builder.mPermissionCallback.onPermissionResult(
                     iRequestCode,
-                    PermissionEnum.NEVER_ASK_AGAIN
+                    PermissionEnum.NeverAskAgain
                 )
                 it.dismiss()
             }
