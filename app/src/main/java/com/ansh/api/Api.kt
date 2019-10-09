@@ -36,20 +36,6 @@ class Api private constructor(apiUrl: String, private val apiType: ApiType) {
         }
     }
 
-    fun get(url: String): HeaderBuilder {
-        return HeaderBuilder(url, ApiType.Get)
-    }
-
-    class HeaderBuilder internal constructor(url: String, apiType: ApiType) {
-
-        private var headerBuilder: Headers.Builder = Headers.Builder()
-
-        fun addHeader(key: String, value: String) = apply {
-            headerBuilder.add(key, value)
-        }
-
-    }
-
     private var baseUrl = ""
     private var requestUrl = ""
 

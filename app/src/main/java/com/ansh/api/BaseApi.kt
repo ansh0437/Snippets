@@ -1,27 +1,66 @@
 package com.ansh.api
 
 import com.ansh.BuildConfig
+import com.ansh.api.builders.FileBuilder
+import com.ansh.api.builders.FormDataBuilder
+import com.ansh.api.builders.HeaderBuilder
+import com.ansh.api.builders.JsonBuilder
 import com.ansh.api.impl.ApiInterface
 import com.ansh.interfaces.ApiResponse
 import com.google.gson.JsonObject
-import okhttp3.Headers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
+import java.io.File
 
 open class BaseApi {
 
-    fun get() {
-        Api.get(url = "")
-            .setConnectionTimeout(timeout = 60L)
-            .headers(headers = Headers.Builder().build())
-            .bodyJson(json = JsonObject())
-            .bodyFormData(formData = HashMap())
-            .bodyMultipart(files = listOf(), formData = HashMap())
-            .interceptLogs(intercept = BuildConfig.DEBUG)
+    fun sample() {
+        val headers = HeaderBuilder.addHeader("", "").build()
+        val json = JsonBuilder.add("", "").build()
+        val formData = FormDataBuilder.add("", "").build()
+        val multipartFiles = FileBuilder.addFile("", File("")).build()
+
+        ApiHelper.get("")
+            .addHeaders(headers)
+            .addSuccessListener { }
+            .addFailureListener { }
+            .execute<JsonObject>()
+
+        ApiHelper
+            .post("")
+            .addHeaders(headers)
+            .bodyJson(json)
+            .addSuccessListener { }
+            .addFailureListener { }
+            .execute<JsonObject>()
+
+        ApiHelper
+            .formData("")
+            .addHeaders(headers)
+            .bodyFormData(formData)
+            .addSuccessListener { }
+            .addFailureListener { }
+            .execute<JsonObject>()
+
+        ApiHelper
+            .multipart("")
+            .addHeaders(headers)
+            .multipartFiles(multipartFiles)
+            .multipartBody(formData)
+            .addSuccessListener { }
+            .addFailureListener { }
+            .execute<JsonObject>()
+
+        Api.get("")
+            .setConnectionTimeout(60L)
+            .headers(headers)
+            .bodyJson(json)
+            .bodyFormData(formData)
+            .bodyMultipart(multipartFiles, formData)
+            .interceptLogs(BuildConfig.DEBUG)
             .addSuccessListener {}
             .addFailureListener {}
-            .execute<JSONObject>()
+            .execute<JsonObject>()
     }
 
     fun get(url: String, apiResponse: ApiResponse?) {
