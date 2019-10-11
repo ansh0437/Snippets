@@ -1,23 +1,21 @@
 package com.ansh.api.builders
 
+import com.ansh.data.model.ApiConfigDTO
 import com.ansh.enums.ApiType
 import okhttp3.Headers
-import okhttp3.logging.HttpLoggingInterceptor
 
-class GetBuilder constructor(url: String) : BaseBuilder() {
+class GetBuilder private constructor(url: String) : BaseBuilder() {
+
+    companion object {
+        fun getBuilder(url: String) = GetBuilder(url)
+    }
 
     init {
         init(url, ApiType.Get)
     }
 
-    fun connectionTimeout(timeout: Long) = apply {
-        connectionTimeout = timeout
-    }
-
-    fun interceptLogs(intercept: Boolean) = apply {
-        logging.level =
-            if (intercept) HttpLoggingInterceptor.Level.BODY
-            else HttpLoggingInterceptor.Level.NONE
+    fun configurations(config: ApiConfigDTO) = apply {
+        configDTO = config
     }
 
     fun addHeaders(headers: Headers) = apply {

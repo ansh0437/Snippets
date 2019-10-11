@@ -1,10 +1,7 @@
 package com.ansh.api
 
 import com.ansh.BuildConfig
-import com.ansh.api.builders.FileBuilder
-import com.ansh.api.builders.FormDataBuilder
-import com.ansh.api.builders.HeaderBuilder
-import com.ansh.api.builders.JsonBuilder
+import com.ansh.api.builders.*
 import com.ansh.api.impl.ApiInterface
 import com.ansh.interfaces.ApiResponse
 import com.google.gson.JsonObject
@@ -15,12 +12,19 @@ import java.io.File
 open class BaseApi {
 
     fun sample() {
+        val configDTO = ConfigBuilder
+            .getBuilder()
+            .connectionTimeout(60L)
+            .readTimeout(60L)
+            .interceptLogs(true)
+            .build()
         val headers = HeaderBuilder.addHeader("", "").build()
         val json = JsonBuilder.add("", "").build()
         val formData = FormDataBuilder.add("", "").build()
         val multipartFiles = FileBuilder.addFile("", File("")).build()
 
         ApiHelper.get("")
+            .configurations(configDTO)
             .addHeaders(headers)
             .addSuccessListener { }
             .addFailureListener { }
@@ -28,6 +32,7 @@ open class BaseApi {
 
         ApiHelper
             .post("")
+            .configurations(configDTO)
             .addHeaders(headers)
             .bodyJson(json)
             .addSuccessListener { }
@@ -36,6 +41,7 @@ open class BaseApi {
 
         ApiHelper
             .formData("")
+            .configurations(configDTO)
             .addHeaders(headers)
             .bodyFormData(formData)
             .addSuccessListener { }
@@ -44,6 +50,7 @@ open class BaseApi {
 
         ApiHelper
             .multipart("")
+            .configurations(configDTO)
             .addHeaders(headers)
             .multipartFiles(multipartFiles)
             .multipartBody(formData)

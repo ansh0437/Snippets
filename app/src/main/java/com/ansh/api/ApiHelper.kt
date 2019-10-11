@@ -3,42 +3,15 @@ package com.ansh.api
 import com.ansh.api.builders.GetBuilder
 import com.ansh.api.builders.MultipartBuilder
 import com.ansh.api.builders.PostBuilder
-import com.ansh.enums.ApiType
 
-class ApiHelper private constructor() {
+object ApiHelper {
 
-    companion object {
-        fun get(url: String): GetBuilder {
-            return ApiHelper().get(url)
-        }
+    fun get(url: String) = GetBuilder.getBuilder(url)
 
-        fun post(url: String): PostBuilder {
-            return ApiHelper().post(url)
-        }
+    fun post(url: String) = PostBuilder.getJsonBuilder(url)
 
-        fun formData(url: String): PostBuilder {
-            return ApiHelper().formData(url)
-        }
+    fun formData(url: String) = PostBuilder.getFormDataBuilder(url)
 
-        fun multipart(url: String): MultipartBuilder {
-            return ApiHelper().multipart(url)
-        }
-    }
-
-    fun get(url: String): GetBuilder {
-        return GetBuilder(url)
-    }
-
-    fun post(url: String): PostBuilder {
-        return PostBuilder(url, ApiType.Post)
-    }
-
-    fun formData(url: String): PostBuilder {
-        return PostBuilder(url, ApiType.FormData)
-    }
-
-    fun multipart(url: String): MultipartBuilder {
-        return MultipartBuilder(url, ApiType.Multipart)
-    }
+    fun multipart(url: String) = MultipartBuilder.getBuilder(url)
 
 }
