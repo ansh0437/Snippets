@@ -19,10 +19,11 @@ interface ApiInterface {
         @Body jsonObject: JsonObject
     ): Call<JsonObject>
 
+    @FormUrlEncoded
     @POST("{url}")
     fun postApi(
         @Path("url") url: String,
-        @PartMap bodyMap: HashMap<String, RequestBody>
+        @FieldMap bodyMap: HashMap<String, String>
     ): Call<JsonObject>
 
     @Multipart

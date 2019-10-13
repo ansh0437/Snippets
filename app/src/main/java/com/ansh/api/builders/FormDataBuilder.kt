@@ -1,8 +1,5 @@
 package com.ansh.api.builders
 
-import okhttp3.MediaType
-import okhttp3.RequestBody
-
 class FormDataBuilder private constructor() {
 
     companion object {
@@ -11,13 +8,11 @@ class FormDataBuilder private constructor() {
         fun emptyFormData() = FormDataBuilder().emptyBuild()
     }
 
-    private var formData: HashMap<String, RequestBody> = HashMap()
+    private var formData: HashMap<String, String> = HashMap()
 
-    private fun requestBody(value: String) = RequestBody.create(MediaType.get("text/plain"), value)
+    fun add(key: String, value: String) = apply { formData[key] = value }
 
-    fun add(key: String, value: String) = apply { formData[key] = requestBody(value) }
-
-    fun build(): HashMap<String, RequestBody> {
+    fun build(): HashMap<String, String> {
         if (formData.isEmpty()) throw Exception("Form Data cannot be empty")
         else return formData
     }

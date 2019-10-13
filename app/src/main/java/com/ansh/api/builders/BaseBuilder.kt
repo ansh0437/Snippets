@@ -25,8 +25,9 @@ open class BaseBuilder {
     internal var configDTO: ApiConfigDTO = ConfigBuilder.getBuilder().build()
     internal var requestHeaders: Headers = Headers.Builder().build()
     internal var jsonObject: JsonObject? = null
-    internal var files: List<MultipartBody.Part>? = null
-    internal var formData: HashMap<String, RequestBody>? = null
+    internal var formData: HashMap<String, String>? = null
+    internal var multipartFiles: List<MultipartBody.Part>? = null
+    internal var multipartFields: HashMap<String, RequestBody>? = null
 
     internal var successListener: ((Any?) -> Unit)? = null
     internal var failureListener: ((String) -> Unit)? = null
@@ -52,7 +53,7 @@ open class BaseBuilder {
                 apiRequest.postApi(requestUrl, formData!!)
             }
             ApiType.Multipart -> {
-                apiRequest.multipartApi(requestUrl, files!!, formData!!)
+                apiRequest.multipartApi(requestUrl, multipartFiles!!, multipartFields!!)
             }
         }
 

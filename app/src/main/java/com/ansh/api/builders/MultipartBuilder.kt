@@ -25,11 +25,11 @@ class MultipartBuilder private constructor(url: String) : BaseBuilder() {
     }
 
     fun multipartFiles(files: List<MultipartBody.Part>) = apply {
-        this.files = files
+        this.multipartFiles = files
     }
 
-    fun multipartBody(formData: HashMap<String, RequestBody>) = apply {
-        this.formData = formData
+    fun multipartFields(formData: HashMap<String, RequestBody>) = apply {
+        this.multipartFields = formData
     }
 
     fun addSuccessListener(listener: (Any?) -> Unit) = apply {

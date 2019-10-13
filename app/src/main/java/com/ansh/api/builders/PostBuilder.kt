@@ -30,7 +30,7 @@ class PostBuilder private constructor(url: String, apiType: ApiType) : BaseBuild
         this.jsonObject = json
     }
 
-    fun bodyFormData(formData: HashMap<String, RequestBody>) = apply {
+    fun bodyFormData(formData: HashMap<String, String>) = apply {
         this.formData = formData
     }
 

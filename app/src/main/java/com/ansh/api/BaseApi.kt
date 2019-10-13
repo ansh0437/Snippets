@@ -21,7 +21,8 @@ open class BaseApi {
         val headers = HeaderBuilder.addHeader("", "").build()
         val json = JsonBuilder.add("", "").build()
         val formData = FormDataBuilder.add("", "").build()
-        val multipartFiles = FileBuilder.addFile("", File("")).build()
+        val multipartFields = MultipartDataBuilder.addField("", "").buildFields()
+        val multipartFiles = MultipartDataBuilder.addFile("", File("")).buildFiles()
 
         ApiHelper.get("")
             .configurations(configDTO)
@@ -53,7 +54,7 @@ open class BaseApi {
             .configurations(configDTO)
             .addHeaders(headers)
             .multipartFiles(multipartFiles)
-            .multipartBody(formData)
+            .multipartFields(multipartFields)
             .addSuccessListener { }
             .addFailureListener { }
             .execute<JsonObject>()
@@ -63,7 +64,7 @@ open class BaseApi {
             .headers(headers)
             .bodyJson(json)
             .bodyFormData(formData)
-            .bodyMultipart(multipartFiles, formData)
+            .bodyMultipart(multipartFiles, multipartFields)
             .interceptLogs(BuildConfig.DEBUG)
             .addSuccessListener {}
             .addFailureListener {}
@@ -79,6 +80,12 @@ open class BaseApi {
     fun post(url: String, json: JsonObject, apiResponse: ApiResponse?) {
         val apiInterface = ApiClient.create(ApiInterface::class.java)
         val call = apiInterface.postApi(url, json)
+        ApiClient.execute(call, apiResponse)
+    }
+
+    fun formData(url: String, formData: HashMap<String, String>, apiResponse: ApiResponse?) {
+        val apiInterface = ApiClient.create(ApiInterface::class.java)
+        val call = apiInterface.postApi(url, formData)
         ApiClient.execute(call, apiResponse)
     }
 

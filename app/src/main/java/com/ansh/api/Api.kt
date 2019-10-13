@@ -46,8 +46,9 @@ class Api private constructor(apiUrl: String, private val apiType: ApiType) {
 
     private var requestHeaders: Headers = Headers.Builder().build()
     private var jsonObject: JsonObject? = null
-    private var files: List<MultipartBody.Part>? = null
-    private var formData: HashMap<String, RequestBody>? = null
+    private var formData: HashMap<String, String>? = null
+    private var multipartFiles: List<MultipartBody.Part>? = null
+    private var multipartFields: HashMap<String, RequestBody>? = null
 
     private var successListener: ((Any?) -> Unit)? = null
     private var failureListener: ((String) -> Unit)? = null
@@ -69,16 +70,16 @@ class Api private constructor(apiUrl: String, private val apiType: ApiType) {
         this.jsonObject = json
     }
 
-    fun bodyFormData(formData: HashMap<String, RequestBody>) = apply {
+    fun bodyFormData(formData: HashMap<String, String>) = apply {
         this.formData = formData
     }
 
     fun bodyMultipart(
         files: List<MultipartBody.Part>,
-        formData: HashMap<String, RequestBody>?
+        fields: HashMap<String, RequestBody>?
     ) = apply {
-        this.files = files
-        this.formData = formData
+        this.multipartFiles = files
+        this.multipartFields = fields
     }
 
     fun interceptLogs(intercept: Boolean = true) = apply {
@@ -102,7 +103,7 @@ class Api private constructor(apiUrl: String, private val apiType: ApiType) {
             ApiType.Get -> apiRequest.getApi(requestUrl, requestHeaders)
             ApiType.Post -> apiRequest.postApi(requestUrl, jsonObject!!)
             ApiType.FormData -> apiRequest.postApi(requestUrl, formData!!)
-            ApiType.Multipart -> apiRequest.multipartApi(requestUrl, files!!, formData!!)
+            ApiType.Multipart -> apiRequest.multipartApi(requestUrl, multipartFiles!!, multipartFields!!)
         }
 
         callApi(call)
