@@ -19,20 +19,31 @@ import com.ansh.interfaces.PositiveListener
 import com.ansh.utilities.DialogUtil
 import java.util.*
 
-class PermissionHelper private constructor(private val builder: Builder) {
+class PermissionHelper private constructor(
+    private val isActivity: Boolean,
+    private val mActivity: Activity,
+    private val mFragment: Fragment?,
+    private val mPermissionCallback: PermissionCallback?
+) {
 
-    class Builder {
+    class Builder private constructor() {
 
-        var isActivity: Boolean = true
-        lateinit var mActivity: Activity
-        lateinit var mFragment: Fragment
-        lateinit var mPermissionCallback: PermissionCallback
+        companion object {
+            fun forActivity(activity: Activity) = Builder().setActivity(activity)
 
-        fun setActivity(activity: Activity) = apply {
+            fun forFragment(fragment: Fragment) = Builder().setFragment(fragment)
+        }
+
+        private var isActivity: Boolean = true
+        private lateinit var mActivity: Activity
+        private lateinit var mFragment: Fragment
+        private var mPermissionCallback: PermissionCallback? = null
+
+        private fun setActivity(activity: Activity) = apply {
             mActivity = activity
         }
 
-        fun setFragment(fragment: Fragment) = apply {
+        private fun setFragment(fragment: Fragment) = apply {
             isActivity = false
             mFragment = fragment
             mActivity = mFragment.requireActivity()
@@ -42,13 +53,34 @@ class PermissionHelper private constructor(private val builder: Builder) {
             mPermissionCallback = permissionCallback
         }
 
-        fun build(): PermissionHelper = PermissionHelper(this)
+        fun build(): PermissionHelper {
+            return PermissionHelper(isActivity, mActivity, mFragment, mPermissionCallback)
+        }
     }
 
     private var mPermissionList = ArrayList<String>()
     private var mPermissionsNeededList = ArrayList<String>()
     private var mDialogMessage = ""
-    private var iRequestCode: Int = 0
+    private var iRequestCode = 0
+
+    fun hasPermission(permission: String) = ContextCompat
+        .checkSelfPermission(mActivity, permission) == PackageManager.PERMISSION_GRANTED
+
+    fun requestPermission(requestCode: Int, permission: String, alertMessage: String) {
+        iRequestCode = requestCode
+        mPermissionList = arrayListOf(permission)
+        mDialogMessage = alertMessage
+
+        if (isActivity) {
+            ActivityCompat.requestPermissions(
+                mActivity,
+                mPermissionList.toTypedArray(),
+                iRequestCode
+            )
+        } else {
+            mFragment!!.requestPermissions(mPermissionList.toTypedArray(), iRequestCode)
+        }
+    }
 
     fun processPermission(permissions: ArrayList<String>, dialogContent: String, requestCode: Int) {
         this.mPermissionList = permissions
@@ -56,10 +88,10 @@ class PermissionHelper private constructor(private val builder: Builder) {
         this.iRequestCode = requestCode
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkAndRequestPermissions(permissions, requestCode)) {
-                builder.mPermissionCallback.onPermissionResult(requestCode, PermissionEnum.Granted)
+                mPermissionCallback?.onPermissionResult(requestCode, PermissionEnum.Granted)
             }
         } else {
-            builder.mPermissionCallback.onPermissionResult(requestCode, PermissionEnum.Granted)
+            mPermissionCallback?.onPermissionResult(requestCode, PermissionEnum.Granted)
         }
     }
 
@@ -71,20 +103,20 @@ class PermissionHelper private constructor(private val builder: Builder) {
             mPermissionsNeededList = ArrayList()
             for (i in permissions.indices) {
                 val hasPermission =
-                    ContextCompat.checkSelfPermission(builder.mActivity, permissions[i])
+                    ContextCompat.checkSelfPermission(mActivity, permissions[i])
                 if (hasPermission != PackageManager.PERMISSION_GRANTED) {
                     mPermissionsNeededList.add(permissions[i])
                 }
             }
             if (mPermissionsNeededList.isNotEmpty()) {
-                if (builder.isActivity) {
+                if (isActivity) {
                     ActivityCompat.requestPermissions(
-                        builder.mActivity,
+                        mActivity,
                         mPermissionsNeededList.toTypedArray(),
                         request_code
                     )
                 } else {
-                    builder.mFragment.requestPermissions(
+                    mFragment!!.requestPermissions(
                         mPermissionsNeededList.toTypedArray(),
                         request_code
                     )
@@ -109,13 +141,13 @@ class PermissionHelper private constructor(private val builder: Builder) {
                 val pendingPermissions = ArrayList<String>()
                 for (i in mPermissionsNeededList.indices) {
                     if (perms[mPermissionsNeededList[i]] != PackageManager.PERMISSION_GRANTED) {
-                        val b: Boolean = if (builder.isActivity) {
+                        val b: Boolean = if (isActivity) {
                             ActivityCompat.shouldShowRequestPermissionRationale(
-                                builder.mActivity,
+                                mActivity,
                                 mPermissionsNeededList[i]
                             )
                         } else {
-                            builder.mFragment.shouldShowRequestPermissionRationale(
+                            mFragment!!.shouldShowRequestPermissionRationale(
                                 mPermissionsNeededList[i]
                             )
                         }
@@ -129,7 +161,7 @@ class PermissionHelper private constructor(private val builder: Builder) {
                 }
                 if (pendingPermissions.size > 0) {
                     DialogUtil.alert(
-                        builder.mActivity,
+                        mActivity,
                         R.string.alert.resToStr,
                         mDialogMessage,
                         R.string.ok.resToStr,
@@ -143,7 +175,7 @@ class PermissionHelper private constructor(private val builder: Builder) {
                             it.dismiss()
                         },
                         NegativeListener {
-                            builder.mPermissionCallback.onPermissionResult(
+                            mPermissionCallback?.onPermissionResult(
                                 this@PermissionHelper.iRequestCode,
                                 if (mPermissionList.size == pendingPermissions.size) PermissionEnum.Denied
                                 else PermissionEnum.PartiallyGranted
@@ -152,7 +184,7 @@ class PermissionHelper private constructor(private val builder: Builder) {
                         }
                     )
                 } else {
-                    builder.mPermissionCallback.onPermissionResult(
+                    mPermissionCallback?.onPermissionResult(
                         this.iRequestCode,
                         PermissionEnum.Granted
                     )
@@ -163,19 +195,19 @@ class PermissionHelper private constructor(private val builder: Builder) {
 
     private fun settingsDialog() {
         DialogUtil.alert(
-            builder.mActivity,
+            mActivity,
             R.string.alert.resToStr,
             R.string.need_permission_manual.resToStr,
             R.string.ok.resToStr,
             R.string.cancel.resToStr,
             PositiveListener {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.data = Uri.parse("package:" + builder.mActivity.packageName)
-                builder.mActivity.startActivityForResult(intent, REQUEST_CODE_SETTINGS)
+                intent.data = Uri.parse("package:" + mActivity.packageName)
+                mActivity.startActivityForResult(intent, REQUEST_CODE_SETTINGS)
                 it.dismiss()
             },
             NegativeListener {
-                builder.mPermissionCallback.onPermissionResult(
+                mPermissionCallback?.onPermissionResult(
                     iRequestCode,
                     PermissionEnum.NeverAskAgain
                 )
