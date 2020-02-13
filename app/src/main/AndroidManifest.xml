@@ -29,7 +29,7 @@
                     android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name="com.ansh.view.activities.base.BaseActivity"/>
+        <activity android:name="com.ansh.view.activities.base.CoreBaseActivity"/>
     </application>
 
 </manifest>
