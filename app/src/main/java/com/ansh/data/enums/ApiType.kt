@@ -1,4 +1,4 @@
-package com.ansh.enums
+package com.ansh.data.enums
 
 enum class ApiType {
 

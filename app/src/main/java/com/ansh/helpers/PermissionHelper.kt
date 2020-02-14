@@ -10,13 +10,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.ansh.R
-import com.ansh.constants.REQUEST_CODE_SETTINGS
-import com.ansh.enums.PermissionEnum
+import com.ansh.data.constants.REQUEST_CODE_SETTINGS
+import com.ansh.data.enums.PermissionEnum
 import com.ansh.extensions.resToStr
-import com.ansh.interfaces.NegativeListener
 import com.ansh.interfaces.PermissionCallback
-import com.ansh.interfaces.PositiveListener
-import com.ansh.utilities.DialogUtil
+import com.ansh.module.dialog.DialogListener
+import com.ansh.module.dialog.DialogUtil
 import java.util.*
 
 class PermissionHelper private constructor(
@@ -166,7 +165,7 @@ class PermissionHelper private constructor(
                         mDialogMessage,
                         R.string.ok.resToStr,
                         R.string.cancel.resToStr,
-                        PositiveListener {
+                        positiveListener = DialogListener {
                             processPermission(
                                 mPermissionList,
                                 mDialogMessage,
@@ -174,7 +173,7 @@ class PermissionHelper private constructor(
                             )
                             it.dismiss()
                         },
-                        NegativeListener {
+                        negativeListener = DialogListener {
                             mPermissionCallback?.onPermissionResult(
                                 this@PermissionHelper.iRequestCode,
                                 if (mPermissionList.size == pendingPermissions.size) PermissionEnum.Denied
@@ -200,13 +199,13 @@ class PermissionHelper private constructor(
             R.string.need_permission_manual.resToStr,
             R.string.ok.resToStr,
             R.string.cancel.resToStr,
-            PositiveListener {
+            positiveListener = DialogListener {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 intent.data = Uri.parse("package:" + mActivity.packageName)
                 mActivity.startActivityForResult(intent, REQUEST_CODE_SETTINGS)
                 it.dismiss()
             },
-            NegativeListener {
+            negativeListener = DialogListener {
                 mPermissionCallback?.onPermissionResult(
                     iRequestCode,
                     PermissionEnum.NeverAskAgain

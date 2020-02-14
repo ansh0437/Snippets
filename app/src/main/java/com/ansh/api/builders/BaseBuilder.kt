@@ -3,7 +3,7 @@ package com.ansh.api.builders
 import com.ansh.R
 import com.ansh.api.impl.ApiRequest
 import com.ansh.data.model.ApiConfigDTO
-import com.ansh.enums.ApiType
+import com.ansh.data.enums.ApiType
 import com.ansh.extensions.resToStr
 import com.google.gson.JsonObject
 import okhttp3.Headers

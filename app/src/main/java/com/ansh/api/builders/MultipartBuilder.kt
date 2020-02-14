@@ -1,7 +1,7 @@
 package com.ansh.api.builders
 
 import com.ansh.data.model.ApiConfigDTO
-import com.ansh.enums.ApiType
+import com.ansh.data.enums.ApiType
 import okhttp3.Headers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

@@ -1,7 +1,7 @@
-package com.ansh.interfaces;
+package com.ansh.module.dialog;
 
 import android.content.DialogInterface;
 
-interface DialogListener {
+public interface DialogListener {
     void onClick(DialogInterface dialogInterface);
 }

@@ -1,4 +1,4 @@
-package com.ansh.constants
+package com.ansh.data.constants
 
 const val REQUEST_CODE_PLAY_SERVICES = 2404
 const val REQUEST_CODE_SETTINGS = 1234
