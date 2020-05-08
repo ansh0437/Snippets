@@ -1,11 +1,8 @@
 package com.ansh.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.ansh.adapter.generic.GenericViewHolder
 
 abstract class BaseAdapter<T, E : ViewDataBinding> :
     RecyclerView.Adapter<GenericViewHolder<E>>() {
@@ -14,11 +11,8 @@ abstract class BaseAdapter<T, E : ViewDataBinding> :
     protected var dataListener: ((T) -> Unit)? = null
     protected var dataPositionListener: ((T, Int) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GenericViewHolder<E>(
-        DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context), getLayoutId(), parent, false
-        )
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        GenericViewHolder(getDataBinding(parent))
 
     override fun getItemCount() = mItems.size
 
@@ -40,7 +34,7 @@ abstract class BaseAdapter<T, E : ViewDataBinding> :
         this.dataPositionListener = listener
     }
 
-    protected abstract fun getLayoutId(): Int
+    protected abstract fun getDataBinding(parent: ViewGroup): E
     protected abstract fun onBind(binding: E, data: T, position: Int)
 }
 
