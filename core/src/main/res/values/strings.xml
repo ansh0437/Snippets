@@ -1,0 +1,29 @@
+<resources>
+
+    <string name="app_name">Core</string>
+
+    <string name="preference_name">core</string>
+
+    <string name="select_photo">Select Photo</string>
+
+    <array name="image_selector_options">
+        <item>Camera</item>
+        <item>Gallery</item>
+        <item>Cancel</item>
+    </array>
+
+    <string name="ok">Ok</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="please_wait">Please Wait…</string>
+    <string name="connection_failed">Unable to establish connection with server</string>
+    <string name="alert">Alert</string>
+    <string name="cancel">Cancel</string>
+    <string name="need_permission_location">Location permission needed to work properly.</string>
+    <string name="need_permission_camera">Camera permission needed to authenticate user.</string>
+    <string name="need_permission_storage">Storage permission needed to update app.</string>
+    <string name="need_permission_manual">Give permission manually from settings.</string>
+    <string name="type_here">Type here…</string>
+
+</resources>
