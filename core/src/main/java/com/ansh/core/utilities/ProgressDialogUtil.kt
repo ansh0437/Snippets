@@ -30,6 +30,10 @@ object ProgressDialogUtil {
         }
     }
 
+    fun show(activity: Activity, color: Int) {
+        show(activity, CurveDTO(color))
+    }
+
     fun show(activity: Activity, curveDTO: CurveDTO) {
         if (alertDialog == null) {
             val curveLoader = CurvesLoader(

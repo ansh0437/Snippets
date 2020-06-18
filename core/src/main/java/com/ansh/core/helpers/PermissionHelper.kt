@@ -10,7 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.ansh.core.R
-import com.ansh.core.data.constants.REQUEST_CODE_SETTINGS
+import com.ansh.core.data.constants.RC_SETTINGS
 import com.ansh.core.data.enums.PermissionEnum
 import com.ansh.core.extensions.resToStr
 import com.ansh.core.interfaces.PermissionCallback
@@ -202,7 +202,7 @@ class PermissionHelper private constructor(
             positiveListener = DialogListener {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 intent.data = Uri.parse("package:" + mActivity.packageName)
-                mActivity.startActivityForResult(intent, REQUEST_CODE_SETTINGS)
+                mActivity.startActivityForResult(intent, RC_SETTINGS)
                 it.dismiss()
             },
             negativeListener = DialogListener {

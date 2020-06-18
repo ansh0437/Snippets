@@ -3,10 +3,6 @@ package com.ansh.core.data
 import android.content.Context
 import android.content.SharedPreferences
 
-fun String.getString(defaultValue: String = ""): String {
-    return SharedPref.getString(this, defaultValue)
-}
-
 object SharedPref {
 
     private var pref: SharedPreferences =

@@ -20,4 +20,9 @@ open class CoreApp : Application() {
         super.onCreate()
         coreApp = this
     }
+
+    fun setup(debug: Boolean, prefName: String) {
+        debuggingEnabled = debug
+        preferenceName = prefName
+    }
 }

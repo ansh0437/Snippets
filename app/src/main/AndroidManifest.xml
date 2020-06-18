@@ -16,7 +16,7 @@
             android:roundIcon="@drawable/ic_logo"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.PermissionDemo"></activity>
+        <activity android:name=".activities.PermissionDemo" />
         <activity android:name=".activities.DemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
