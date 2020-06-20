@@ -1,4 +1,4 @@
-package com.ansh.core.api
+package com.ansh.core.api.v1
 
 import com.ansh.core.R
 import com.ansh.core.extensions.resToStr
@@ -54,7 +54,7 @@ object ApiClient {
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                apiResponse?.onFailure(t.message ?: "")
+                apiResponse?.onFailure(t.message ?: R.string.connection_failed.resToStr)
             }
         })
     }

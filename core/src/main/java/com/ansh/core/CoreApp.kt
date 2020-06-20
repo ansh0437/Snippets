@@ -21,8 +21,9 @@ open class CoreApp : Application() {
         coreApp = this
     }
 
-    fun setup(debug: Boolean, prefName: String) {
+    fun setup(debug: Boolean, baseUrl: String, prefName: String) {
         debuggingEnabled = debug
+        baseURL = baseUrl
         preferenceName = prefName
     }
 }

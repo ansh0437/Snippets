@@ -1,4 +1,4 @@
-package com.ansh.core.api
+package com.ansh.core.api.v2
 
 import com.ansh.core.api.builders.GetBuilder
 import com.ansh.core.api.builders.MultipartBuilder

@@ -1,7 +1,6 @@
-package com.ansh.core.api
+package com.ansh.core.api.v2
 
 import com.ansh.core.R
-import com.ansh.core.api.impl.ApiRequest
 import com.ansh.core.data.enums.ApiType
 import com.ansh.core.extensions.resToStr
 import com.google.gson.JsonObject

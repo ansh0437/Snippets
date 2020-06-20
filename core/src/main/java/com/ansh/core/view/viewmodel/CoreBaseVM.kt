@@ -19,8 +19,9 @@ open class CoreVM : ViewModel() {
     val onBackClicked = MutableLiveData(false)
     val onMenuClicked = MutableLiveData(false)
 
+    fun closePage(): LiveData<Boolean> = closePage
     fun backClick(): LiveData<Boolean> = onBackClicked
-    fun menuClick(): LiveData<Boolean> = onBackClicked
+    fun menuClick(): LiveData<Boolean> = onMenuClicked
 
     fun goBack() {
         onBackClicked.value = true
@@ -30,8 +31,14 @@ open class CoreVM : ViewModel() {
         onMenuClicked.value = true
     }
 
-    fun setupToolbar() {
-
+    fun setupToolbar(
+        showToolbar: Boolean = true,
+        showBack: Boolean = true,
+        showMenu: Boolean = true
+    ) {
+        this.showToolbar.value = showToolbar
+        this.showBack.value = showBack
+        this.showMenu.value = showMenu
     }
 
 }

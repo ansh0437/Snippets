@@ -1,7 +1,7 @@
 package com.ansh.core.api.builders
 
 import com.ansh.core.R
-import com.ansh.core.api.impl.ApiRequest
+import com.ansh.core.api.v2.ApiRequest
 import com.ansh.core.data.enums.ApiType
 import com.ansh.core.data.model.ApiConfigDTO
 import com.ansh.core.extensions.resToStr
