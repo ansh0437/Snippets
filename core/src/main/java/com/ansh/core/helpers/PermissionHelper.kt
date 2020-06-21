@@ -14,7 +14,6 @@ import com.ansh.core.data.constants.RC_SETTINGS
 import com.ansh.core.data.enums.PermissionEnum
 import com.ansh.core.extensions.resToStr
 import com.ansh.core.interfaces.PermissionCallback
-import com.ansh.core.module.dialog.DialogListener
 import com.ansh.core.module.dialog.DialogUtil
 import java.util.*
 
@@ -165,7 +164,7 @@ class PermissionHelper private constructor(
                         mDialogMessage,
                         R.string.ok.resToStr,
                         R.string.cancel.resToStr,
-                        positiveListener = DialogListener {
+                        positiveListener = {
                             processPermission(
                                 mPermissionList,
                                 mDialogMessage,
@@ -173,7 +172,7 @@ class PermissionHelper private constructor(
                             )
                             it.dismiss()
                         },
-                        negativeListener = DialogListener {
+                        negativeListener = {
                             mPermissionCallback?.onPermissionResult(
                                 this@PermissionHelper.iRequestCode,
                                 if (mPermissionList.size == pendingPermissions.size) PermissionEnum.Denied
@@ -199,13 +198,13 @@ class PermissionHelper private constructor(
             R.string.need_permission_manual.resToStr,
             R.string.ok.resToStr,
             R.string.cancel.resToStr,
-            positiveListener = DialogListener {
+            positiveListener = {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 intent.data = Uri.parse("package:" + mActivity.packageName)
                 mActivity.startActivityForResult(intent, RC_SETTINGS)
                 it.dismiss()
             },
-            negativeListener = DialogListener {
+            negativeListener = {
                 mPermissionCallback?.onPermissionResult(
                     iRequestCode,
                     PermissionEnum.NeverAskAgain

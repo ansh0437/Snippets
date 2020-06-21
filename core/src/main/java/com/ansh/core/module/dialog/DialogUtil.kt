@@ -1,6 +1,7 @@
 package com.ansh.core.module.dialog
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -15,14 +16,34 @@ import com.ansh.core.view.adapters.DialogListAdapter
 
 object DialogUtil {
 
+    fun confirmation(
+        activity: Activity,
+        message: String,
+        positiveListener: ((DialogInterface) -> Unit)? = null,
+        negativeListener: ((DialogInterface) -> Unit)? = null
+    ) {
+        alert(
+            activity,
+            R.string.confirmation.resToStr,
+            message,
+            R.string.yes.resToStr,
+            R.string.cancel.resToStr,
+            positiveListener,
+            {
+                if (negativeListener == null) it.dismiss()
+                else negativeListener(it)
+            }
+        )
+    }
+
     fun alert(
         activity: Activity,
         title: String = R.string.alert.resToStr,
         message: String,
         positiveLabel: String = R.string.ok.resToStr,
         negativeLabel: String = R.string.cancel.resToStr,
-        positiveListener: DialogListener? = null,
-        negativeListener: DialogListener? = null
+        positiveListener: ((DialogInterface) -> Unit)? = null,
+        negativeListener: ((DialogInterface) -> Unit)? = null
     ) {
         val binding = LayoutAlertDialogBinding.inflate(LayoutInflater.from(activity))
 
@@ -37,16 +58,16 @@ object DialogUtil {
 
         binding.tvLeft.apply {
             text = negativeLabel
-            visibility = if (negativeListener == null) View.GONE else View.VISIBLE
+//            visibility = if (negativeListener == null) View.GONE else View.VISIBLE
         }
 
         binding.tvRight.apply {
             text = positiveLabel
-            visibility = if (positiveListener == null) View.GONE else View.VISIBLE
+//            visibility = if (positiveListener == null) View.GONE else View.VISIBLE
         }
 
-        val onClickListener: (listener: DialogListener?) -> Unit = {
-            if (it == null) alertDialog.dismiss() else it.onClick(alertDialog)
+        val onClickListener: (listener: ((DialogInterface) -> Unit)?) -> Unit = {
+            if (it == null) alertDialog.dismiss() else it(alertDialog)
         }
 
         binding.ibClose.setOnClickListener { onClickListener(null) }

@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.ansh.core.data.constants.RC_SETTINGS
-import com.ansh.core.module.dialog.DialogListener
 import com.ansh.core.module.dialog.DialogUtil
 
 class PermissionHelper {
@@ -91,7 +90,7 @@ class PermissionHelper {
     fun askAgainDialog(message: String) {
         DialogUtil.alert(mActivity!!,
             message = message,
-            positiveListener = DialogListener {
+            positiveListener = {
                 requestPermission()
                 it.dismiss()
             }
@@ -101,7 +100,7 @@ class PermissionHelper {
     fun neverAskDialog() {
         DialogUtil.alert(mActivity!!,
             message = "Give permission manually from settings.",
-            positiveListener = DialogListener {
+            positiveListener = {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 intent.data = Uri.parse("package:" + mActivity!!.packageName)
                 mActivity!!.startActivityForResult(intent, RC_SETTINGS)

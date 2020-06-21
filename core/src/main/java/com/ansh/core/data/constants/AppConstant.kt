@@ -1,5 +1,8 @@
 package com.ansh.core.data.constants
 
+const val ZERO_STRING = "0"
+const val ONE_STRING = "1"
+
 const val RC_PERMISSION_CAMERA = 1
 const val RC_PERMISSION_PHONE_STATE = 2
 const val RC_PERMISSION_LOCATION = 3
