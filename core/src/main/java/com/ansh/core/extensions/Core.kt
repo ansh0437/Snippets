@@ -28,6 +28,9 @@ val Int.toDP
 val Int.resToStr: String
     get() = CoreApp.appCtx.getString(this)
 
+val Int.resToList: List<String>
+    get() = CoreApp.appCtx.resources.getStringArray(this).toList()
+
 val Int.resToColor: Int
     get() = ContextCompat.getColor(CoreApp.appCtx, this)
 
