@@ -2,8 +2,11 @@ package com.ansh.core.utilities
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import com.ansh.core.CoreApp
 
 object PhoneUtil {
 
@@ -19,30 +22,59 @@ object PhoneUtil {
     val isNetworkAvailable: Boolean
         get() {
             val connectivityManager =
-                com.ansh.core.CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
 
+    fun isNetworkConnected(): Boolean {
+        var result = false
+        val connectivityManager =
+            CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val activeNetwork =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            result = when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.run {
+                connectivityManager.activeNetworkInfo?.run {
+                    result = when (type) {
+                        ConnectivityManager.TYPE_WIFI -> true
+                        ConnectivityManager.TYPE_MOBILE -> true
+                        ConnectivityManager.TYPE_ETHERNET -> true
+                        else -> false
+                    }
+                }
+            }
+        }
+        return result
+    }
+
     val isConnectedWifi: Boolean
         get() {
-            val cm = com.ansh.core.CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val cm = CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val info = cm.activeNetworkInfo
             return info != null && info.isConnected && info.type == ConnectivityManager.TYPE_WIFI
         }
 
     val isConnectedMobile: Boolean
         get() {
-            val cm = com.ansh.core.CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val cm = CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val info = cm.activeNetworkInfo
             return info != null && info.isConnected && info.type == ConnectivityManager.TYPE_MOBILE
         }
 
     val isConnectedFast: Boolean
         get() {
-            val cm = com.ansh.core.CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val cm = CoreApp.appCtx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val info = cm.activeNetworkInfo
-            val tm = com.ansh.core.CoreApp.appCtx.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            val tm = CoreApp.appCtx.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             return info != null && info.isConnected && isConnectionFast(info.type, tm.networkType)
         }
 

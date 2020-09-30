@@ -1,7 +1,15 @@
 package com.ansh.core.data.constants
 
+const val EMPTY_STRING = ""
 const val ZERO_STRING = "0"
 const val ONE_STRING = "1"
+
+const val ZERO_INT = 0
+const val ZERO_FLOAT = 0F
+const val ZERO_LONG = 0L
+
+const val FALSE = false
+const val TRUE = true
 
 const val RC_PERMISSION_CAMERA = 1
 const val RC_PERMISSION_PHONE_STATE = 2
